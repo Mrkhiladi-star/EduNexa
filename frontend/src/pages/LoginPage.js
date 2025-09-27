@@ -13,15 +13,14 @@ import Popup from '../components/Popup';
 const defaultTheme = createTheme();
 
 const LoginPage = ({ role }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
 
-    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);;
-
-    const [toggle, setToggle] = useState(false)
-    const [guestLoader, setGuestLoader] = useState(false)
-    const [loader, setLoader] = useState(false)
+    const [toggle, setToggle] = useState(false);
+    const [guestLoader, setGuestLoader] = useState(false);
+    const [loader, setLoader] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -44,11 +43,10 @@ const LoginPage = ({ role }) => {
                 if (!password) setPasswordError(true);
                 return;
             }
-            const fields = { rollNum, studentName, password }
-            setLoader(true)
-            dispatch(loginUser(fields, role))
-        }
-
+            const fields = { rollNum, studentName, password };
+            setLoader(true);
+            dispatch(loginUser(fields, role));
+        } 
         else {
             const email = event.target.email.value;
             const password = event.target.password.value;
@@ -59,9 +57,9 @@ const LoginPage = ({ role }) => {
                 return;
             }
 
-            const fields = { email, password }
-            setLoader(true)
-            dispatch(loginUser(fields, role))
+            const fields = { email, password };
+            setLoader(true);
+            dispatch(loginUser(fields, role));
         }
     };
 
@@ -74,50 +72,69 @@ const LoginPage = ({ role }) => {
     };
 
     const guestModeHandler = () => {
-        const password = "zxc"
+        const password = "zxc";
 
         if (role === "Admin") {
-            const email = "yogendra@12"
-            const fields = { email, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
+            const email = "yogendra@12";
+            const fields = { email, password };
+            setGuestLoader(true);
+            dispatch(loginUser(fields, role));
         }
         else if (role === "Student") {
-            const rollNum = "1"
-            const studentName = "Dipesh Awasthi"
-            const fields = { rollNum, studentName, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
+            const rollNum = "1";
+            const studentName = "Dipesh Awasthi";
+            const fields = { rollNum, studentName, password };
+            setGuestLoader(true);
+            dispatch(loginUser(fields, role));
         }
         else if (role === "Teacher") {
-            const email = "tony@12"
-            const fields = { email, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
+            const email = "tony@12";
+            const fields = { email, password };
+            setGuestLoader(true);
+            dispatch(loginUser(fields, role));
         }
-    }
+        else if (role === "District Magistrate") {
+            const email = "dm@12";
+            const fields = { email, password };
+            setGuestLoader(true);
+            dispatch(loginUser(fields, role));
+        }
+        else if (role === "Ministry") {
+            const email = "ministry@12";
+            const fields = { email, password };
+            setGuestLoader(true);
+            dispatch(loginUser(fields, role));
+        }
+    };
 
     useEffect(() => {
         if (status === 'success' || currentUser !== null) {
-            if (currentRole === 'Admin') {
+            if (currentRole === 'Admin' || currentRole === 'Admin') {
                 navigate('/Admin/dashboard');
             }
             else if (currentRole === 'Student') {
                 navigate('/Student/dashboard');
-            } else if (currentRole === 'Teacher') {
+            } 
+            else if (currentRole === 'Teacher') {
                 navigate('/Teacher/dashboard');
+            }
+            else if (currentRole === 'District Magistrate') {
+                navigate('/DM/dashboard');
+            }
+            else if (currentRole === 'Ministry') {
+                navigate('/Ministry/dashboard');
             }
         }
         else if (status === 'failed') {
-            setMessage(response)
-            setShowPopup(true)
-            setLoader(false)
+            setMessage(response);
+            setShowPopup(true);
+            setLoader(false);
         }
         else if (status === 'error') {
-            setMessage("Network Error")
-            setShowPopup(true)
-            setLoader(false)
-            setGuestLoader(false)
+            setMessage("Network Error");
+            setShowPopup(true);
+            setLoader(false);
+            setGuestLoader(false);
         }
     }, [status, currentRole, navigate, error, response, currentUser]);
 
@@ -282,7 +299,7 @@ const LoginPage = ({ role }) => {
     );
 }
 
-export default LoginPage
+export default LoginPage;
 
 const StyledLink = styled(Link)`
   margin-top: 9px;
